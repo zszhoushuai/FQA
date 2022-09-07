@@ -1,0 +1,11 @@
+POST http://localhost:9200/_analyze
+Content-Type: application/json
+
+{
+  "analyzer": "ik_max_word",
+  "text": "好好学习天天向上"
+}
+
+###
+GET http://localhost:9200
+

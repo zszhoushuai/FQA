@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+<form id="demoForm">
+    <input type="file" id="imageFile" name="imageFile"><br>
+    <input type="submit">
+</form>
+<img src="" id="image">
+</body>
+<script src="js/utils.js"></script>
+<script>
+    //在页面加载完毕之后运行!
+    $(function () {
+        //先绑定一个方法,当用户点击提交时,验证是否选中了图片
+        $("#demoForm").submit(function(){
+            //获得用户选择的文件(js是获得用户选择的文件数组)
+            let files=document.getElementById("imageFile").files;
+            //判断文件数组是不是长度>0
+            if(files.length>0){
+                //有文件,做上传
+                let file=files[0];//将文件从数组中取出
+                console.log(file);
+                //调用专门上传文件的方法
+                uploadImage(file);
+            }else{
+                //没文件,直接结束
+                alert("请选择文件")
+            }
+            return false;//阻止表单提交
+        })
+        //完成文件上传的方法
+        function uploadImage(file){
+            //构建表单
+            let form=new FormData();
+            form.append("imageFile",file);
+            $.ajax({
+                url:"/upload/file",
+                method:"post",
+                data:form,//发送的是我们构建的表单中的数据
+                //下面有两个特殊参数,需要在文件上传时设置
+                contentType:false,
+                processData:false,
+                success:function(r){
+                    if(r.code==OK){
+                        console.log(r);
+                        //alert(r.message);
+                        $("#image").attr("src",r.message);
+                    }else{
+                        alert(r.message);
+                    }
+                }
+            });
+        }
+    })
+
+
+</script>
+
+
+</html>

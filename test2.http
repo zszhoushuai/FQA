@@ -1,0 +1,14 @@
+### 多字段搜索
+POST http://localhost:9200/questions/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "title":  "java类型" }},
+        { "match": { "content": "java类型"}}
+      ]
+    }
+  }
+}
